@@ -1,0 +1,96 @@
+.certs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.education-card {
+  padding: 3rem;
+  height: 100%;
+}
+
+.edu-degree {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  background: var(--gradient-neon);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.edu-university {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+}
+
+.edu-date {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.edu-details {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.certs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cert-card {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.cert-card:hover {
+  transform: translateX(-5px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cert-icon-wrapper {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cert-name {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.cert-meta {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cert-issuer {
+  color: var(--accent-light-blue);
+}
+
+@media (max-width: 992px) {
+  .certs-grid {
+    grid-template-columns: 1fr;
+  }
+}
