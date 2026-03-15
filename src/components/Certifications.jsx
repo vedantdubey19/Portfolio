@@ -1,13 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Certifications.css';
 import { Award } from 'lucide-react';
 
-const certData = [
-  { name: "Generative AI Certification", issuer: "Oracle", date: "Sept 2025", icon: "🤖" },
-  { name: "AI Foundations Certification", issuer: "Oracle", date: "Sept 2025", icon: "🧠" }
+const initialCertData = [
+  { 
+    name: "Generative AI Certification", 
+    issuer: "Oracle", 
+    date: "Sept 2025", 
+    imageUrl: "/certificates/genai.jpg" 
+  },
+  { 
+    name: "AI Foundations Certification", 
+    issuer: "Oracle", 
+    date: "Sept 2025", 
+    imageUrl: "/certificates/cloud.jpg" 
+  },
+  { 
+    name: "Frontend Developer (React)", 
+    issuer: "HackerRank", 
+    date: "Recent", 
+    imageUrl: "/certificates/react.jpg" 
+  }
 ];
 
 const Certifications = () => {
+  const [certs, setCerts] = useState(initialCertData);
+
+  useEffect(() => {
+    const fetchCerts = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/certificates');
+        const data = await response.json();
+        if (data && data.length > 0) {
+          setCerts([...data, ...initialCertData]); // combine backend certs with hardcoded ones
+        }
+      } catch (error) {
+        console.error('Error fetching certificates:', error);
+      }
+    };
+    fetchCerts();
+  }, []);
+
   return (
     <section className="certifications-section" id="certifications">
       <div className="container">
@@ -27,11 +60,21 @@ const Certifications = () => {
           </div>
 
           <div className="certs-list">
-            {certData.map((cert, idx) => (
-              <div key={idx} className="cert-card glass-panel magnetic">
-                <div className="cert-icon-wrapper">{cert.icon}</div>
+            {certs.map((cert, idx) => (
+              <div key={idx} className="cert-card glass-panel magnetic" style={cert.imageUrl ? { padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center', textAlign: 'center' } : {}}>
+                {cert.imageUrl ? (
+                  <div className="cert-image-wrapper" style={{ width: '100%', height: '180px', borderRadius: '12px', overflow: 'hidden', marginBottom: '0.5rem', background: 'rgba(0,0,0,0.2)' }}>
+                    <img 
+                      src={cert.imageUrl.startsWith('/uploads') ? `http://localhost:5001${cert.imageUrl}` : cert.imageUrl} 
+                      alt={cert.title || cert.name} 
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                    />
+                  </div>
+                ) : (
+                  <div className="cert-icon-wrapper">{cert.icon}</div>
+                )}
                 <div className="cert-info">
-                  <h4 className="cert-name">{cert.name}</h4>
+                  <h4 className="cert-name">{cert.title || cert.name}</h4>
                   <div className="cert-meta">
                     <span className="cert-issuer">{cert.issuer}</span>
                     <span className="cert-dot">•</span>
