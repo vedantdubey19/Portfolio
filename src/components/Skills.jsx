@@ -11,7 +11,7 @@ const Skills = () => {
       'MongoDB', 'Express', 'React', 'NodeJS', 
       'Python', 'Java', 'DSA', 'TensorFlow', 'PyTorch', 
       'Docker', 'Git', 'AWS', 'GCP', 
-      'FastAPI', 'TypeScript', 'SQL', 'C++'
+      'FastAPI', 'TypeScript', 'SQL'
     ];
 
     const iconMap = {
@@ -30,8 +30,7 @@ const Skills = () => {
       'GCP': 'devicon-googlecloud-plain colored',
       'FastAPI': 'devicon-fastapi-plain colored',
       'TypeScript': 'devicon-typescript-plain colored',
-      'SQL': 'devicon-sqldeveloper-plain colored',
-      'C++': 'devicon-cplusplus-plain colored'
+      'SQL': 'devicon-sqldeveloper-plain colored'
     };
 
     // Format texts to include HTML icons
@@ -88,7 +87,7 @@ const Skills = () => {
               I design systems that leverage the MERN stack for robust web architecture, while powering them with cutting-edge ML and AI models.
             </p>
             <ul className="skills-highlights">
-              <li><CheckCircle size={20} className="highlight-icon" /> <strong>Core Concepts:</strong> Data Structures & Algorithms (DSA) in Java, C++</li>
+              <li><CheckCircle size={20} className="highlight-icon" /> <strong>Core Concepts:</strong> Data Structures & Algorithms (DSA) in Java</li>
               <li><CheckCircle size={20} className="highlight-icon" /> <strong>Full Stack:</strong> MongoDB, Express, React, Node (MERN)</li>
               <li><CheckCircle size={20} className="highlight-icon" /> <strong>Machine Learning:</strong> PyTorch, TensorFlow, Scikit-learn</li>
               <li><CheckCircle size={20} className="highlight-icon" /> <strong>Generative AI:</strong> LangChain, OpenAI APIs, NLP Pipelines</li>

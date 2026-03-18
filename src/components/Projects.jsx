@@ -8,7 +8,7 @@ const projectsData = [
     tag: 'AI SaaS • NLP',
     description: 'An AI-powered recruitment engine designed to intelligently automate resume screening. Engineered a semantic job-matching pipeline using advanced embeddings to process 5,000+ candidate profiles, slashing manual shortlisting time by ~70% through automated candidate ranking.',
     tech: ['MERN', 'NLP', 'Embeddings', 'Docker', 'MongoDB'],
-    github: '#',
+    github: 'https://github.com/vedantdubey19/HireSense-AI',
     live: '#'
   },
   {
