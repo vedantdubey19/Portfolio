@@ -20,6 +20,7 @@ function App() {
     <>
       <CustomCursor />
       <LiquidTrail />
+      <div className="noise-overlay"></div>
       
       {loading ? (
         <Preloader onComplete={() => setLoading(false)} />
