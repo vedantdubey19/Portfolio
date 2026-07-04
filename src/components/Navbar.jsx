@@ -32,8 +32,8 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container nav-container">
-        <a href="#home" className="logo">
-          V<span className="gradient-text">D</span>
+        <a href="#home" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          Vedant <span className="gradient-text" style={{ fontSize: '0.7em', letterSpacing: '1px', textTransform: 'uppercase' }}>AI Engineer</span>
         </a>
 
         {/* Desktop Menu */}
