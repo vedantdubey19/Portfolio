@@ -14,25 +14,33 @@ const Contact = () => {
     e.preventDefault();
     setStatus('Sending...');
     
+    const apiUrl = import.meta.env.VITE_API_URL;
+    if (!apiUrl) {
+      setStatus('API URL is not configured. Please connect with me directly via Email or LinkedIn.');
+      setTimeout(() => setStatus(''), 6000);
+      return;
+    }
+
     try {
-      const response = await fetch('http://localhost:5001/api/contact', {
+      const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       
       if (response.ok) {
-        setStatus('Message sent successfully!');
+        setStatus('Message sent successfully! I will get back to you soon.');
         setFormData({ name: '', email: '', message: '' });
       } else {
-        setStatus('Failed to send message.');
+        const errorData = await response.json().catch(() => ({}));
+        setStatus(`Failed to send: ${errorData.error || 'Server error. Please email me directly.'}`);
       }
     } catch (error) {
-      setStatus('Error sending message.');
-      console.error(error);
+      setStatus('Unable to connect to the server. Please email me directly at the address below.');
+      console.error('Contact submit error:', error);
     }
     
-    setTimeout(() => setStatus(''), 3000);
+    setTimeout(() => setStatus(''), 6000);
   };
 
   return (

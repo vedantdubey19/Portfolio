@@ -2,9 +2,9 @@
 
 :root {
   /* Colors - BMW M5 Theme */
-  --bg-primary: #050505; /* Deep Black */
-  --bg-secondary: #111111; /* Carbon */
-  --bg-card: rgba(17, 17, 17, 0.7);
+  --bg-primary: #000000; /* Pure Black */
+  --bg-secondary: #050505; /* Solid Carbon */
+  --bg-card: rgba(8, 8, 8, 0.75);
   
   --text-primary: #ffffff;
   --text-secondary: #a0a0a0;
