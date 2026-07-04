@@ -8,7 +8,6 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Experience from './components/Experience';
-import CollegePics from './components/CollegePics';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
 import Navbar from './components/Navbar';
@@ -33,7 +32,6 @@ function App() {
             <Skills />
             <Projects />
             <Experience />
-            <CollegePics />
             <Certifications />
             <Contact />
           </main>
