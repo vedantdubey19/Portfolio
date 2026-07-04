@@ -335,7 +335,7 @@ const projectsData = [
     impact: 'Reduces manual incident diagnosis time and MTTR by 72% based on local performance benchmarks, saving engineering hours and establishing 99.9% pipeline ingestion reliability.',
     performance: 'Ingestion Capacity: 10,000+ logs/sec | Diagnostics latency: ~1.2s | Client-side latency: <0.5ms',
     github: 'https://github.com/vedantdubey19/Pulse-AI',
-    live: '#'
+    live: 'https://pulse-ai-pi.vercel.app/'
   },
   {
     title: 'NexChat',
@@ -354,7 +354,7 @@ const projectsData = [
     impact: 'Maintained 0% out-of-context hallucinations during local evaluation benchmarks, generating highly relevant responses grounded in custom enterprise data with a 400ms query latency.',
     performance: 'Vector Index Match Speed: ~48ms | End-to-end RAG response: ~400ms | Ingestion rate: 50+ docs/min',
     github: 'https://github.com/vedantdubey19/NexChat',
-    live: '#'
+    live: 'https://nex-chat-ivory.vercel.app/'
   },
   {
     title: 'TripNest',
@@ -373,7 +373,7 @@ const projectsData = [
     impact: 'Decreased user travel booking steps by 60% and achieved a 45% reduction in search loading speeds via smart caching layers.',
     performance: 'Aggregated search API latency: <800ms (reduced from 3.2s via TTL caching) | Session validation: <5ms',
     github: 'https://github.com/vedantdubey19/TripNest',
-    live: '#'
+    live: 'https://tripnest-5flq.onrender.com/'
   }
 ];
 
@@ -446,7 +446,7 @@ const Projects = () => {
                 overflow: 'hidden',
                 transition: 'border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease'
               }}
-              className="project-card glass-panel magnetic"
+              className="project-card glass-panel"
             >
               {/* Card visual hover overlay */}
               <div 
