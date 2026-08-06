@@ -1,49 +1,86 @@
 import React from 'react';
+import { ArrowRight, FileText } from 'lucide-react';
 import './Hero.css';
-import { ArrowRight, Github, Linkedin } from 'lucide-react';
 import heroPhoto from '../assets/IMG_0068.PNG';
+import resumePdf from '../assets/Resume.pdf';
 
 const Hero = () => {
   return (
     <section className="hero-section" id="home">
+      {/* Background Venetian Window Shadows & Ambient Lighting */}
+      <div className="hero-shadow-overlay"></div>
+      <div className="hero-ambient-glow"></div>
+
+      {/* Huge Background Watermark Typography */}
+      <div className="hero-watermark" aria-hidden="true">
+        <span className="watermark-first">VEDANT</span>
+        <span className="watermark-second">DUBEY</span>
+      </div>
+
       <div className="container hero-container">
+        {/* Left Column Content */}
         <div className="hero-content">
-          <h1 className="hero-title">
-            Hi, I'm <span className="gradient-text hover-glow">Vedant Dubey</span>
+          {/* Status Badge Pill */}
+          <div className="hero-status-pill">
+            <span className="status-dot"></span>
+            <span>Available for New Opportunities</span>
+          </div>
+
+          {/* Impact Punchy Headline */}
+          <h1 className="hero-main-title">
+            I DON'T JUST BUILD <span className="title-white-outline">WEBSITES.</span><br />
+            I CREATE <span className="title-red-highlight">AI EXPERIENCES.</span>
           </h1>
-          <h2 className="hero-headline" style={{ fontSize: '2.25rem', fontWeight: '700', marginTop: '0.5rem', marginBottom: '0.75rem', lineHeight: '1.2' }}>
-            Building Intelligent AI Applications for Real-World Problems
-          </h2>
-          <h3 className="hero-subtitle" style={{ fontSize: '1.25rem', fontWeight: '500', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-            AI Engineer focused on Large Language Models, Retrieval-Augmented Generation, AI Agents, scalable backend systems, and production-ready AI applications.
-          </h3>
-          <p className="hero-description" style={{ marginBottom: '2rem' }}>
-            Transforming cutting-edge AI research into scalable software that delivers measurable impact.
+
+          {/* Sub-headline Description */}
+          <p className="hero-main-desc">
+            I transform complex algorithms & raw data into intelligent, high-performance web systems 
+            that captivate users, automate workflows, and leave a lasting impression.
           </p>
-          <div className="hero-actions" style={{ flexWrap: 'wrap' }}>
-            <a href="#projects" className="cta-button magnetic">
-              View AI Projects <ArrowRight size={18} style={{ marginLeft: '8px' }} />
+
+          {/* Action Pill Buttons */}
+          <div className="hero-btn-row">
+            <a href="#projects" className="hero-btn-primary">
+              <span>View Projects</span>
+              <ArrowRight size={18} />
             </a>
-            <a href="/Software Engineer Resume.pdf" target="_blank" download="Vedant_Dubey_Resume.pdf" className="cta-button secondary magnetic">
-              Download Resume
+            <a href={resumePdf} target="_blank" rel="noopener noreferrer" download="Vedant_Dubey_Resume.pdf" className="hero-btn-secondary">
+              <FileText size={16} />
+              <span>Resume</span>
             </a>
-            <a href="https://github.com/vedantdubey19" target="_blank" rel="noopener noreferrer" className="cta-button secondary magnetic" style={{ gap: '8px' }}>
-              <Github size={18} /> GitHub
-            </a>
-            <a href="https://www.linkedin.com/in/vedant-dubey-a9697b278/" target="_blank" rel="noopener noreferrer" className="cta-button secondary magnetic" style={{ gap: '8px' }}>
-              <Linkedin size={18} /> LinkedIn
+            <a href="#contact" className="hero-btn-secondary">
+              Contact Me
             </a>
           </div>
+
+          {/* Bottom Left Glass Stats Card */}
+          <div className="hero-stats-card">
+            <div className="stat-item">
+              <span className="stat-num">2+</span>
+              <span className="stat-lbl">YEARS<br />EXPERIENCE</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <span className="stat-num">15+</span>
+              <span className="stat-lbl">PROJECTS<br />COMPLETED</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <span className="stat-num">100%</span>
+              <span className="stat-lbl">PRODUCTION<br />RELIABILITY</span>
+            </div>
+          </div>
         </div>
-        
-        <div className="hero-image-wrapper">
-          <div className="hero-image-container glass-panel">
+
+        {/* Right Side Portrait Image */}
+        <div className="hero-portrait-wrapper">
+          <div className="hero-portrait-container">
             <img 
               src={heroPhoto} 
               alt="Vedant Dubey" 
-              className="hero-profile-image"
+              className="hero-portrait-img"
             />
-            <div className="image-glow"></div>
+            <div className="portrait-blend-gradient"></div>
           </div>
         </div>
       </div>
@@ -52,3 +89,4 @@ const Hero = () => {
 };
 
 export default Hero;
+

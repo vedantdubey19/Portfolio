@@ -1,6 +1,7 @@
 import React from 'react';
 import './Contact.css';
-import { Mail, Linkedin, Github, Send } from 'lucide-react';
+import { Mail, Linkedin, Github, Send, FileText } from 'lucide-react';
+import resumePdf from '../assets/Resume.pdf';
 
 const Contact = () => {
   return (
@@ -10,9 +11,9 @@ const Contact = () => {
           <h2 className="section-title" style={{ marginBottom: 0 }}>
             <Mail className="section-icon" /> Let's Connect
           </h2>
-          <a href="/Software Engineer Resume.pdf" target="_blank" download="Vedant_Dubey_Resume.pdf" className="cta-button magnetic" style={{ borderColor: 'var(--accent-red)' }}>
+          <a href={resumePdf} target="_blank" rel="noopener noreferrer" download="Vedant_Dubey_Resume.pdf" className="cta-button magnetic" style={{ borderColor: 'var(--accent-red)' }}>
             <span style={{ color: 'var(--text-primary)' }}>Download Resume</span>
-            <Send size={16} style={{ marginLeft: '10px', transform: 'rotate(90deg)' }} />
+            <FileText size={16} style={{ marginLeft: '8px' }} />
           </a>
         </div>
         

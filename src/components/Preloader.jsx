@@ -1,93 +1,143 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Code, Sparkles, Terminal } from 'lucide-react';
 import './Preloader.css';
 
+const icons = [Code, Sparkles, Terminal];
+
 const Preloader = ({ onComplete }) => {
-  const steps = [
-    "Initializing AI Portfolio...",
-    "Loading Projects...",
-    "Loading Experience...",
-    "Loading Models...",
-    "Welcome Vedant Dubey"
-  ];
-
-  const [currentStep, setCurrentStep] = useState(0);
-
   useEffect(() => {
-    if (currentStep < steps.length - 1) {
-      const interval = setTimeout(() => {
-        setCurrentStep(prev => prev + 1);
-      }, 350); // Sequential steps
-      return () => clearTimeout(interval);
-    } else {
-      const timer = setTimeout(() => {
-        onComplete();
-      }, 600); // Wait on welcome step
-      return () => clearTimeout(timer);
-    }
-  }, [currentStep, onComplete, steps.length]);
+    document.body.style.overflow = 'hidden';
+
+    const timer = setTimeout(() => {
+      if (onComplete) onComplete();
+    }, 3600);
+
+    return () => {
+      document.body.style.overflow = 'auto';
+      clearTimeout(timer);
+    };
+  }, [onComplete]);
 
   return (
-    <AnimatePresence>
+    <motion.div
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ 
+        opacity: 0, 
+        scale: 1.05, 
+        transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] } 
+      }}
+      className="prince-preloader-backdrop"
+    >
+      {/* Soft Ambient Blur Glows */}
+      <div className="prince-ambient-blur top-blur"></div>
+      <div className="prince-ambient-blur bottom-blur"></div>
+
       <motion.div
-        className="preloader-container"
-        initial={{ y: 0 }}
-        exit={{ y: "-100vh", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }, opacity: 0 }}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          padding: '4rem',
-          boxSizing: 'border-box',
-          backgroundColor: '#000000',
-          fontFamily: 'var(--font-sans)'
-        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        className="prince-preloader-card"
       >
-        <div style={{ maxWidth: '600px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          {steps.slice(0, currentStep + 1).map((step, idx) => {
-            const isLast = idx === currentStep;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.25 }}
-                style={{
-                  fontSize: idx === steps.length - 1 ? '1.5rem' : '1.05rem',
-                  fontWeight: idx === steps.length - 1 ? '700' : '400',
-                  color: idx === steps.length - 1 ? 'var(--text-primary)' : 'var(--text-secondary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.25rem',
-                  fontFamily: 'var(--font-sans)',
-                  lineHeight: '1.4'
-                }}
-              >
-                <span style={{ color: idx === steps.length - 1 ? 'var(--accent-red)' : 'rgba(255,255,255,0.2)', marginRight: '0.5rem' }}>
-                  {idx === steps.length - 1 ? '❯' : '$'}
-                </span>
-                {step}
-                {isLast && (
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.6, ease: "steps(2)" }}
-                    style={{
-                      display: 'inline-block',
-                      width: '8px',
-                      height: idx === steps.length - 1 ? '1.5rem' : '1.05rem',
-                      background: idx === steps.length - 1 ? 'var(--accent-red)' : 'var(--text-secondary)',
-                      marginLeft: '4px'
-                    }}
-                  />
-                )}
-              </motion.div>
-            );
-          })}
+        {/* Top 3 Round Icon Badges */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.2 } }
+          }}
+          className="prince-icon-row"
+        >
+          {icons.map((IconComp, idx) => (
+            <motion.div
+              key={idx}
+              variants={{
+                hidden: { opacity: 0, scale: 0.3, rotate: -140, y: 60 },
+                visible: { opacity: 1, scale: 1, rotate: 0, y: 0 }
+              }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ scale: 1.1 }}
+              className="prince-icon-badge"
+            >
+              <IconComp size={20} color="white" />
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Text Sequence */}
+        <div className="prince-text-wrapper">
+          <div className="prince-welcome-row">
+            <motion.span
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+              className="prince-text-large"
+            >
+              Welcome
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+              className="prince-text-large"
+            >
+              to my
+            </motion.span>
+          </div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            className="prince-text-headline"
+          >
+            Portfolio Website
+          </motion.h1>
         </div>
+
+        {/* Subtext */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.7 }}
+          transition={{ delay: 1.4, duration: 0.8 }}
+          className="prince-subtext"
+        >
+          Creating Web & AI Systems That Feel Alive.
+        </motion.p>
+
+        {/* Typewriter Domain Pill */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.7, duration: 0.5 }}
+          className="prince-domain-pill"
+        >
+          <motion.span
+            initial={{ width: "0ch" }}
+            animate={{ width: "21ch" }}
+            transition={{ delay: 1.9, duration: 1.4, ease: "easeInOut" }}
+            className="prince-typewriter-text"
+          >
+            vedantdubey.portfolio
+          </motion.span>
+          <motion.span
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
+            className="prince-cursor"
+          >
+            |
+          </motion.span>
+        </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </motion.div>
   );
 };
 
 export default Preloader;
+
+
+
+
+

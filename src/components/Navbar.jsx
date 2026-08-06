@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
+import resumePdf from '../assets/Resume.pdf';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -7,7 +8,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      if (window.scrollY > 40) {
         setScrolled(true);
       } else {
         setScrolled(false);
@@ -19,24 +20,26 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Achievements', href: '#achievements' },
+    { name: 'Live Apps 🚀', href: '#deployed' },
     { name: 'Certifications', href: '#certifications' },
+    { name: 'Experience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
   ];
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container nav-container">
-        <a href="#home" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          Vedant <span className="gradient-text" style={{ fontSize: '0.7em', letterSpacing: '1px', textTransform: 'uppercase' }}>AI Engineer</span>
-        </a>
+        {/* Left Section: Brand Logo */}
+        <div className="nav-left-group">
+          <a href="#home" className="logo">
+            Vedant's Portfolio <span className="logo-dots">● ●</span>
+          </a>
+        </div>
 
-        {/* Desktop Menu */}
+
+        {/* Center / Right Links */}
         <div className="nav-links">
           {navLinks.map((link, index) => (
             <a key={index} href={link.href} className="nav-link">
@@ -45,14 +48,24 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Menu Toggle */}
-        <div 
-          className={`mobile-toggle ${menuOpen ? 'open' : ''}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
+        {/* Far Right Resume & Hire Me Buttons */}
+        <div className="nav-right-actions" style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
+          <a href={resumePdf} target="_blank" rel="noopener noreferrer" download="Vedant_Dubey_Resume.pdf" className="nav-link" style={{ fontSize: '0.85rem', fontWeight: '700' }}>
+            Resume 📄
+          </a>
+          <a href="#contact" className="nav-hire-btn">
+            Hire Me
+          </a>
+          
+          {/* Mobile Menu Toggle */}
+          <div 
+            className={`mobile-toggle ${menuOpen ? 'open' : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
       </div>
 
@@ -68,9 +81,13 @@ const Navbar = () => {
             {link.name}
           </a>
         ))}
+        <a href="#contact" className="mobile-hire-btn" onClick={() => setMenuOpen(false)}>
+          Hire Me
+        </a>
       </div>
     </nav>
   );
 };
 
 export default Navbar;
+

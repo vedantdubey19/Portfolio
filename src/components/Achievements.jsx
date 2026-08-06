@@ -5,6 +5,13 @@ import { Trophy } from 'lucide-react';
 
 const achievementsData = [
   {
+    icon: "🏛️",
+    title: "Campus Ambassador — Techfest, IIT Bombay",
+    description: "Appointed Campus Ambassador for Techfest, IIT Bombay (Asia's Largest Science & Tech Festival), driving technical outreach and student engagement.",
+    date: "Aug 2026 - Present",
+    verified: true
+  },
+  {
     icon: "🏆",
     title: "IBM Machine Learning Internship",
     description: "Engineered scalable model containerization pipelines and FastAPI backend systems, optimizing end-to-end inference latency by 35%.",

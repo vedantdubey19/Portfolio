@@ -1,283 +1,187 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Award, Bot, Cloud, Briefcase, Sparkles, Code, ExternalLink, X, CheckCircle2 } from 'lucide-react';
 import './Certifications.css';
-import { Award } from 'lucide-react';
+
+const certificates = [
+  { 
+    id: 'bedrock', 
+    name: "Amazon Bedrock", 
+    issuer: "Amazon Web Services (AWS)", 
+    date: "2026", 
+    category: "AI & LLM Services",
+    details: "Expertise in deploying LLM APIs, building automated RAG agents, and configuring safety guardrails.",
+    icon: Bot,
+    image: "/certificates/Amazon Bedrock.jpeg",
+    resting: { top: "35px", left: "10px", rotate: -18, scale: 0.92, zIndex: 1 },
+    fanned: { rotate: -26, x: -160, y: -15, scale: 0.96, zIndex: 1 }
+  },
+  { 
+    id: 'gcp', 
+    name: "Google Cloud Associate", 
+    issuer: "Google Cloud Platform", 
+    date: "2026", 
+    category: "Cloud Engineering",
+    details: "Certified competencies in managing, configuring, and scaling containerized ML/LLM application workloads.",
+    icon: Cloud,
+    image: "/certificates/Google.jpeg",
+    resting: { top: "20px", left: "45px", rotate: -9, scale: 0.94, zIndex: 2 },
+    fanned: { rotate: -13, x: -80, y: -30, scale: 0.99, zIndex: 2 }
+  },
+  { 
+    id: 'ibm', 
+    name: "IBM AI Internship", 
+    issuer: "IBM", 
+    date: "Nov 2025", 
+    category: "AI Engineering",
+    details: "Completed 3 months hands-on ML internship, building FastAPI endpoints and vector search indices.",
+    icon: Briefcase,
+    image: "/certificates/IBM CERTIFICATE_page-0001.jpg",
+    resting: { top: "10px", left: "80px", rotate: 0, scale: 0.97, zIndex: 3 },
+    fanned: { rotate: 0, x: 0, y: -40, scale: 1.03, zIndex: 3 }
+  },
+  { 
+    id: 'genai-rag', 
+    name: "Generative AI & RAG", 
+    issuer: "DeepLearning.AI / Industry", 
+    date: "2026", 
+    category: "GenAI & Agents",
+    details: "Certified proficiency in foundation model configurations, vector databases, and secure prompt engineering.",
+    icon: Sparkles,
+    image: "/certificates/GenAi RAG.jpeg",
+    resting: { top: "25px", left: "115px", rotate: 9, scale: 1.0, zIndex: 4 },
+    fanned: { rotate: 13, x: 80, y: -20, scale: 1.06, zIndex: 4 }
+  },
+  { 
+    id: 'react', 
+    name: "Frontend Developer", 
+    issuer: "HackerRank", 
+    date: "2024", 
+    category: "React Development",
+    details: "Advanced skills in React, component state management, hooks, and scalable frontend architectures.",
+    icon: Code,
+    image: "/certificates/react.jpg",
+    resting: { top: "45px", left: "150px", rotate: 18, scale: 1.03, zIndex: 5 },
+    fanned: { rotate: 26, x: 160, y: 10, scale: 1.09, zIndex: 5 }
+  }
+];
+
 
 const Certifications = () => {
-  const [selectedId, setSelectedId] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [activeCert, setActiveCert] = useState(null);
+  const [isStackHovered, setIsStackHovered] = useState(false);
   const [hoveredCardId, setHoveredCardId] = useState(null);
-
-  const certificates = [
-    { 
-      id: 'bedrock', 
-      name: "Amazon Bedrock Certification", 
-      issuer: "Amazon Web Services (AWS)", 
-      date: "2026", 
-      category: "Artificial Intelligence",
-      details: "Expertise in deploying LLM APIs, building automated RAG agents, and configuring safety guardrails.",
-      color: "linear-gradient(135deg, #1f1f2e 0%, #0d0d13 100%)",
-      border: "1px solid rgba(255, 153, 0, 0.4)",
-      link: "/certificates/Amazon Bedrock.jpeg"
-    },
-    { 
-      id: 'gcp', 
-      name: "Google Cloud Associate Engineer", 
-      issuer: "Google Cloud", 
-      date: "2026", 
-      category: "Cloud",
-      details: "Certified competencies in managing, configuring, and scaling containerized ML/LLM application workloads.",
-      color: "linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%)",
-      border: "1px solid rgba(66, 133, 244, 0.4)",
-      link: "/certificates/Google.jpeg"
-    },
-    { 
-      id: 'ibm', 
-      name: "IBM Internship Certificate", 
-      issuer: "IBM", 
-      date: "Nov 2025", 
-      category: "Artificial Intelligence",
-      details: "Completed 3 months hands-on ML internship, building FastAPI endpoints and vector search indices.",
-      color: "linear-gradient(135deg, #0f1c2e 0%, #050a14 100%)",
-      border: "1px solid rgba(9, 117, 240, 0.4)",
-      link: "/certificates/IBM CERTIFICATE_page-0001.jpg"
-    },
-    { 
-      id: 'genai-rag', 
-      name: "Generative AI & RAG", 
-      issuer: "DeepLearning.AI / Industry", 
-      date: "2026", 
-      category: "Artificial Intelligence",
-      details: "Certified proficiency in foundation model configurations, vector databases, and secure prompt engineering.",
-      color: "linear-gradient(135deg, #2a1f1f 0%, #130d0d 100%)",
-      border: "1px solid rgba(255, 42, 42, 0.4)",
-      link: "/certificates/GenAi RAG.jpeg"
-    },
-    { 
-      id: 'react', 
-      name: "Frontend Developer (React)", 
-      issuer: "HackerRank", 
-      date: "2024", 
-      category: "Frontend Development",
-      details: "Advanced skills in React, component state management, hooks, and scalable frontend architectures.",
-      color: "linear-gradient(135deg, #151b22 0%, #090c10 100%)",
-      border: "1px solid rgba(97, 218, 251, 0.4)",
-      link: "/certificates/frontend_developer_react certificate.pdf"
-    }
-  ];
-
-  const handleCardClick = (id) => {
-    if (selectedId === id) {
-      setSelectedId(null); // Collapse on click again
-    } else {
-      setSelectedId(id);
-    }
-  };
 
   return (
     <section className="certifications-section" id="certifications">
-      <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="section-title">
-            <Award className="section-icon" /> Education & Certifications
-          </h2>
-        </motion.div>
-        
-        <div className="certs-grid" style={{ gap: '3rem', alignItems: 'center' }}>
-          {/* Left Column: B.Tech Details */}
-          <div className="education-card glass-panel magnetic" style={{ padding: '2.5rem', height: 'auto' }}>
-            <h3 className="edu-degree" style={{ fontSize: '1.6rem', marginBottom: '0.25rem' }}>B.Tech in Data Science</h3>
-            <p className="edu-university" style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>Lloyd Institute of Engineering and Technology</p>
-            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', margin: '0.75rem 0' }}>
-              <span className="edu-date" style={{ marginBottom: 0, fontSize: '0.85rem' }}>2023 - 2027</span>
-            </div>
-            <p className="edu-details" style={{ fontSize: '0.95rem', lineHeight: '1.65', color: 'var(--text-muted)' }}>
-              Specialized academic track focused on Machine Learning, Large Language Models, Retrieval-Augmented Generation (RAG), vector databases, and scalable backend AI systems. Built data-centric pipelines and deployed prototype models using industry-standard frameworks.
-            </p>
+      {/* Studio Shadow & Overlay */}
+      <div className="cert-shadow-overlay"></div>
+
+      {/* Watermark Background Typography */}
+      <div className="cert-watermark" aria-hidden="true">
+        <span>CERTIFICATIONS</span>
+      </div>
+
+      <div className="container cert-container">
+        {/* Left Column: Heading & Education */}
+        <div className="cert-info-col">
+          <div className="cert-subtitle-badge">
+            <Award size={14} className="cert-badge-icon" />
+            <span>WHAT I EARNED</span>
           </div>
 
-          {/* Right Column: Apple Wallet stacked Deck */}
-          <div 
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={{ 
-              position: 'relative', 
-              height: selectedId ? '550px' : '260px', 
-              width: '100%',
-              maxWidth: '520px', // slightly wider to contain the fanned out cards
-              margin: '0 auto',
-              transition: 'height 0.4s ease'
-            }}
-          >
-            {certificates.map((cert, idx) => {
-              const isSelected = selectedId === cert.id;
-              const anySelected = selectedId !== null;
-              
-              let yOffset = idx * 28; // overlapping translation collapsed
-              let scale = 1 - (idx * 0.02);
-              let opacity = 1;
-              let zIndex = certificates.length - idx;
-              let xOffset = 0;
-              let rotate = 0;
+          <h2 className="cert-main-heading">
+            CERTIFIED EXPERTISE IN <br />
+            <span className="cert-heading-highlight">AI, CLOUD & SYSTEMS.</span>
+          </h2>
 
-              if (anySelected) {
-                if (isSelected) {
-                  yOffset = -35;
-                  xOffset = 0;
-                  rotate = 0;
-                  scale = 1.05;
-                  zIndex = 100;
-                  opacity = 1;
-                } else {
-                  // Other cards slide down to a stacked pile at the bottom
-                  const otherIdx = certificates.findIndex(c => c.id === selectedId);
-                  const relativeIdx = idx > otherIdx ? idx - 1 : idx;
-                  yOffset = 210 + relativeIdx * 12;
-                  xOffset = 0;
-                  rotate = 0;
-                  scale = 0.9 - relativeIdx * 0.02;
-                  opacity = 0.45;
-                  zIndex = idx;
-                }
-              } else if (isHovered) {
-                // Fan out in a triangle/arc (like a hand of playing cards)
-                const centerIdx = (certificates.length - 1) / 2;
-                const offsetFromCenter = idx - centerIdx;
-                
-                xOffset = offsetFromCenter * 35; // Horizontal spread (slightly tighter to prevent escaping)
-                yOffset = Math.abs(offsetFromCenter) * 12 - 10; // Arc shape
-                rotate = offsetFromCenter * 6; // Rotation angle
-                scale = 1.0; 
-                zIndex = idx + 10;
+          <p className="cert-description">
+            Industry-recognized credentials proving hands-on proficiency in building 
+            production AI models, scalable GCP cloud infrastructure, and modern web applications.
+          </p>
+
+          {/* Academic Degree Card */}
+          <div className="edu-card-glass">
+            <div className="edu-header">
+              <span className="edu-tag">ACADEMIC DEGREE</span>
+              <span className="edu-years">2023 - 2027</span>
+            </div>
+            <h3 className="edu-degree-title">B.Tech in Data Science</h3>
+            <p className="edu-inst">Lloyd Institute of Engineering & Technology</p>
+            <p className="edu-summary">
+              Focused track in Machine Learning, Neural Networks, Large Language Models (LLMs), 
+              Retrieval-Augmented Generation (RAG), and Distributed AI Backend Infrastructure.
+            </p>
+          </div>
+        </div>
+
+        {/* Right Column: Himanshu 3D Fanned Card Stack */}
+        <div className="services-right-col">
+          <div 
+            className="services-card-stack"
+            onMouseEnter={() => setIsStackHovered(true)}
+            onMouseLeave={() => setIsStackHovered(false)}
+          >
+            {certificates.map((cert) => {
+              const isCardHovered = hoveredCardId === cert.id;
+              const IconComp = cert.icon;
+
+              let targetRotate = cert.resting.rotate;
+              let targetX = 0;
+              let targetY = 0;
+              let targetScale = cert.resting.scale;
+              let targetZIndex = cert.resting.zIndex;
+
+              if (isCardHovered) {
+                targetRotate = 0;
+                targetX = cert.fanned.x;
+                targetY = -55;
+                targetScale = 1.14;
+                targetZIndex = 100;
+              } else if (isStackHovered) {
+                targetRotate = cert.fanned.rotate;
+                targetX = cert.fanned.x;
+                targetY = cert.fanned.y;
+                targetScale = cert.fanned.scale;
+                targetZIndex = cert.fanned.zIndex;
               }
 
               return (
                 <motion.div
                   key={cert.id}
-                  className="hover-target"
-                  onClick={() => handleCardClick(cert.id)}
+                  className={`stack-card ${cert.id}`}
+                  onMouseEnter={() => setHoveredCardId(cert.id)}
+                  onMouseLeave={() => setHoveredCardId(null)}
+                  onClick={() => setActiveCert(cert)}
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: '5%',
-                    width: '90%', // Reduce slightly so the parent box fully engulfs them for hover stability
-                    background: cert.color,
-                    border: cert.border,
-                    borderRadius: '16px',
-                    padding: '1.25rem 1.5rem',
-                    boxSizing: 'border-box',
-                    cursor: 'pointer',
-                    boxShadow: isSelected 
-                      ? '0 20px 40px rgba(0,0,0,0.5)' 
-                      : '0 8px 16px rgba(0,0,0,0.3)',
-                    zIndex: zIndex,
-                    color: 'var(--text-primary)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    minHeight: isSelected ? '220px' : '90px',
-                    height: isSelected ? 'auto' : 'auto',
-                    overflow: 'hidden',
-                    transformOrigin: 'bottom center'
+                    top: cert.resting.top,
+                    left: cert.resting.left,
                   }}
                   animate={{
-                    x: xOffset,
-                    y: yOffset,
-                    rotate: rotate,
-                    scale: scale,
-                    opacity: opacity
+                    rotate: targetRotate,
+                    x: targetX,
+                    y: targetY,
+                    scale: targetScale,
+                    zIndex: targetZIndex
                   }}
-                  whileHover={
-                    (!anySelected && isHovered) ? {
-                      y: yOffset - 30,
-                      scale: 1.05,
-                      rotate: 0,
-                      zIndex: 50,
-                      transition: { duration: 0.2, ease: "easeOut" }
-                    } : (!anySelected ? { y: yOffset - 5 } : {})
-                  }
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: isSelected ? 220 : 180, 
-                    damping: isSelected ? 20 : 22,
-                    mass: 0.5
+                  transition={{
+                    duration: 0.55,
+                    ease: [0.25, 1, 0.5, 1]
                   }}
-                  className="magnetic"
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div style={{ minWidth: 0, flexGrow: 1 }}>
-                      <span style={{ 
-                        fontSize: '0.7rem', 
-                        color: 'rgba(255, 255, 255, 0.4)', 
-                        textTransform: 'uppercase', 
-                        fontWeight: 700, 
-                        letterSpacing: '0.05em' 
-                      }}>
-                        {cert.category}
-                      </span>
-                      <h4 style={{ 
-                        fontSize: '1.1rem', 
-                        fontWeight: '700', 
-                        margin: '0.15rem 0 0 0', 
-                        lineHeight: '1.3',
-                        textOverflow: 'ellipsis',
-                        overflow: 'hidden',
-                        whiteSpace: isSelected ? 'normal' : 'nowrap'
-                      }}>
-                        {cert.name}
-                      </h4>
+                  <div className="stack-card-inner">
+                    <div className="stack-icon-box">
+                      <IconComp size={18} color="#ffffff" />
                     </div>
-                    <span style={{ fontSize: '1.25rem', paddingLeft: '0.5rem' }}>🎖️</span>
-                  </div>
+                    <h4 className="stack-card-title">{cert.name}</h4>
+                    <p className="stack-card-sub">{cert.issuer}</p>
 
-                  {/* Expanded Content Details */}
-                  <AnimatePresence>
-                    {isSelected && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        style={{ overflow: 'hidden', marginTop: '1.25rem', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '1rem' }}
-                      >
-                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.5', margin: '0 0 1rem 0' }}>
-                          {cert.details}
-                        </p>
-                        
-                        {cert.link && cert.link.match(/\.(jpeg|jpg|gif|png)$/i) ? (
-                          <div style={{ margin: '1rem 0', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
-                            <img src={cert.link} alt={cert.name} style={{ width: '100%', height: 'auto', display: 'block', maxHeight: '200px', objectFit: 'cover', objectPosition: 'top' }} />
-                          </div>
-                        ) : cert.link && cert.link.endsWith('.pdf') ? (
-                          <div style={{ margin: '1rem 0', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', height: '200px', position: 'relative' }}>
-                            <iframe src={`${cert.link}#toolbar=0&navpanes=0&scrollbar=0`} width="100%" height="100%" style={{ border: 'none' }} title={cert.name} />
-                            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'transparent', zIndex: 10 }}></div>
-                          </div>
-                        ) : null}
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)' }}>Issuer: <strong>{cert.issuer}</strong></span>
-                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                            {cert.link && (
-                              <a href={cert.link} target="_blank" rel="noopener noreferrer" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'var(--text-primary)', padding: '0.1rem 0.5rem', borderRadius: '4px', textDecoration: 'none', fontSize: '0.65rem', position: 'relative', zIndex: 20 }}>Open</a>
-                            )}
-                            <span style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', padding: '0.1rem 0.5rem', borderRadius: '10px', fontWeight: '700', textTransform: 'uppercase', fontSize: '0.65rem' }}>✓ Verified</span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: isSelected ? '1rem' : '0.5rem', borderTop: isSelected ? 'none' : '1px solid rgba(255,255,255,0.03)', paddingTop: isSelected ? 0 : '0.35rem' }}>
-                    <span style={{ fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.4)' }}>Issued: {cert.date}</span>
-                    {!isSelected && (
-                      <span style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.3)', fontStyle: 'italic' }}>Click to expand</span>
-                    )}
+                    <div className="stack-card-img-wrapper">
+                      <img src={cert.image} alt={cert.name} className="stack-preview-img" />
+                      <div className="stack-img-overlay">
+                        <span>Click to Open 🔍</span>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               );
@@ -285,8 +189,66 @@ const Certifications = () => {
           </div>
         </div>
       </div>
+
+      {/* Certificate Modal Lightbox */}
+      <AnimatePresence>
+        {activeCert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="cert-modal-backdrop"
+            onClick={() => setActiveCert(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.82, opacity: 0, y: 40 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.82, opacity: 0, y: 40 }}
+              transition={{ type: "spring", stiffness: 320, damping: 26 }}
+              className="cert-modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                className="cert-modal-close" 
+                onClick={() => setActiveCert(null)}
+              >
+                <X size={20} />
+              </button>
+
+              <div className="cert-modal-header">
+                <div className="modal-badge-row">
+                  <span className="modal-category">{activeCert.category}</span>
+                  <span className="modal-verified"><CheckCircle2 size={13} /> Verified Certificate</span>
+                </div>
+                <h2 className="modal-title">{activeCert.name}</h2>
+                <p className="modal-issuer">Issued by <strong>{activeCert.issuer}</strong> ({activeCert.date})</p>
+              </div>
+
+              <div className="cert-modal-image-box">
+                <img src={activeCert.image} alt={activeCert.name} className="modal-cert-img" />
+              </div>
+
+              <p className="modal-details">{activeCert.details}</p>
+
+              <div className="cert-modal-footer">
+                <a 
+                  href={activeCert.image} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="modal-open-link"
+                >
+                  <span>Open High-Res Certificate</span>
+                  <ExternalLink size={15} />
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
 
 export default Certifications;
+
+

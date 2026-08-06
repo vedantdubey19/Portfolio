@@ -46,6 +46,12 @@ const Counter = ({ value, duration = 1.5, suffix = "" }) => {
 
 const experienceData = [
   {
+    role: "Campus Ambassador",
+    company: "Techfest, IIT Bombay · Remote",
+    duration: "Aug 2026 - Present",
+    impact: "Representing Asia's Largest Science & Technology Festival organized by IIT Bombay. Leading campus outreach, technical workshop promotions, student engagement, and brand initiatives across universities."
+  },
+  {
     role: "Machine Learning Engineer Intern",
     company: "IBM",
     duration: "Sept 2025 - Nov 2025 (3 Months)",
