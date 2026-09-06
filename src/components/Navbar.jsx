@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Navbar.css';
 import resumePdf from '../assets/Resume.pdf';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const toggleRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,9 +16,24 @@ const Navbar = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Escape closes the mobile menu and returns focus to the toggle that opened it.
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [menuOpen]);
 
   const navLinks = [
     { name: 'About', href: '#about' },
@@ -58,19 +74,33 @@ const Navbar = () => {
           </a>
           
           {/* Mobile Menu Toggle */}
-          <div 
+          <button
+            type="button"
+            ref={toggleRef}
             className={`mobile-toggle ${menuOpen ? 'open' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      <div className={`mobile-menu ${menuOpen ? 'active' : ''}`}>
+      <div
+        id="mobile-menu"
+        className={`mobile-menu ${menuOpen ? 'active' : ''}`}
+        /*
+         * `inert` (not `hidden`) keeps the closed panel out of the tab order and
+         * the accessibility tree while still allowing the slide-in transition —
+         * `hidden` would set display:none and kill the animation.
+         */
+        inert={!menuOpen}
+      >
         {navLinks.map((link, index) => (
           <a 
             key={index} 

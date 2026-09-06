@@ -10,13 +10,21 @@ const Counter = ({ value, duration = 1.5, suffix = "" }) => {
   const elementRef = useRef(null);
 
   useEffect(() => {
+    const end = parseInt(value, 10);
+    if (isNaN(end)) return;
+
+    // Reduced-motion users get the final number immediately, no count-up.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setCount(end);
+      return;
+    }
+
+    let frameId;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !hasAnimated) {
           setHasAnimated(true);
           let startTime = null;
-          const end = parseInt(value, 10);
-          if (isNaN(end)) return;
 
           const animateCount = (timestamp) => {
             if (!startTime) startTime = timestamp;
@@ -25,10 +33,10 @@ const Counter = ({ value, duration = 1.5, suffix = "" }) => {
             const easeOutValue = percentage === 1 ? 1 : 1 - Math.pow(2, -10 * percentage);
             setCount(Math.floor(easeOutValue * end));
             if (percentage < 1) {
-              requestAnimationFrame(animateCount);
+              frameId = requestAnimationFrame(animateCount);
             }
           };
-          requestAnimationFrame(animateCount);
+          frameId = requestAnimationFrame(animateCount);
         }
       },
       { threshold: 0.1 }
@@ -38,7 +46,10 @@ const Counter = ({ value, duration = 1.5, suffix = "" }) => {
       observer.observe(elementRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      cancelAnimationFrame(frameId);
+      observer.disconnect();
+    };
   }, [value, duration, hasAnimated]);
 
   return <span ref={elementRef}>{count}{suffix}</span>;
@@ -68,11 +79,17 @@ const roadmapData = [
   { year: "2027", title: "AI Engineer", desc: "Targeting deployment of state-of-the-art Generative AI applications and intelligent systems at scale." }
 ];
 
+/*
+ * Every number here is verifiable from elsewhere on this page: 9 = the cards in
+ * DeployedProjects, 5 = the certificates in Certifications, 3 mo = the IBM
+ * internship above, 25+ = distinct technologies listed across the project cards.
+ * Keep it that way — a recruiter who checks should find the numbers add up.
+ */
 const statsData = [
-  { count: "10", suffix: "+", label: "AI Projects Completed" },
-  { count: "15", suffix: "+", label: "Certifications & Credentials" },
-  { count: "500", suffix: "+", label: "LinkedIn Connections" },
-  { count: "100", suffix: "+", label: "GitHub Commits" }
+  { count: "9", suffix: "", label: "Apps Deployed Live" },
+  { count: "5", suffix: "", label: "Industry Certifications" },
+  { count: "3", suffix: " mo", label: "ML Internship at IBM" },
+  { count: "25", suffix: "+", label: "Technologies Shipped" }
 ];
 
 const Experience = () => {

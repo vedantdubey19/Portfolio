@@ -6,13 +6,18 @@ const Background = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    
+
+    // Respect users who ask for reduced motion: paint one static frame, never animate.
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let frameId;
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-    
+
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
@@ -176,10 +181,12 @@ const Background = () => {
     }
 
     // Initialize elements
+    const LINK_DIST = 140;
+    const LINK_DIST_SQ = LINK_DIST * LINK_DIST;
     const stars = Array.from({ length: 110 }, () => new Star());
     const shootingStars = Array.from({ length: 2 }, () => new ShootingStar());
     const constellationNodes = Array.from(
-      { length: window.innerWidth > 768 ? 40 : 20 }, 
+      { length: window.innerWidth > 768 ? 32 : 16 },
       () => new ConstellationNode()
     );
 
@@ -199,8 +206,14 @@ const Background = () => {
     ];
 
     const animate = () => {
+      drawFrame();
+
+      frameId = requestAnimationFrame(animate);
+    };
+
+    const drawFrame = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       // Draw static/twinkling stars
       stars.forEach(star => {
         star.update();
@@ -228,27 +241,35 @@ const Background = () => {
         for (let j = idx + 1; j < constellationNodes.length; j++) {
           const dx = constellationNodes[j].x - node.x;
           const dy = constellationNodes[j].y - node.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
-          if (dist < 140) {
+          // Compare squared distances so we only pay for sqrt on actual neighbours
+          if (distSq < LINK_DIST_SQ) {
+            const dist = Math.sqrt(distSq);
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(constellationNodes[j].x, constellationNodes[j].y);
-            const opacity = (1 - (dist / 140)) * 0.055; // Subtle constellation lines
+            const opacity = (1 - (dist / LINK_DIST)) * 0.055; // Subtle constellation lines
             ctx.strokeStyle = `rgba(180, 200, 255, ${opacity})`;
             ctx.lineWidth = 0.65;
             ctx.stroke();
           }
         }
       });
-      
-      requestAnimationFrame(animate);
     };
-    
-    animate();
+
+    if (reduceMotion) {
+      // Static starfield: paint one frame and repaint on resize instead of looping.
+      drawFrame();
+      window.addEventListener('resize', drawFrame);
+    } else {
+      animate();
+    }
 
     return () => {
+      cancelAnimationFrame(frameId);
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', drawFrame);
     };
   }, []);
 

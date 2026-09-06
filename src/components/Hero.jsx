@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight, FileText } from 'lucide-react';
 import './Hero.css';
-import heroPhoto from '../assets/IMG_0068.PNG';
+import heroPhoto from '../assets/hero-portrait.webp';
 import resumePdf from '../assets/Resume.pdf';
 
 const Hero = () => {
@@ -66,8 +66,8 @@ const Hero = () => {
             </div>
             <div className="stat-divider"></div>
             <div className="stat-item">
-              <span className="stat-num">100%</span>
-              <span className="stat-lbl">PRODUCTION<br />RELIABILITY</span>
+              <span className="stat-num">9</span>
+              <span className="stat-lbl">APPS<br />DEPLOYED LIVE</span>
             </div>
           </div>
         </div>
@@ -75,10 +75,14 @@ const Hero = () => {
         {/* Right Side Portrait Image */}
         <div className="hero-portrait-wrapper">
           <div className="hero-portrait-container">
-            <img 
-              src={heroPhoto} 
-              alt="Vedant Dubey" 
+            <img
+              src={heroPhoto}
+              alt="Vedant Dubey, AI Engineer"
               className="hero-portrait-img"
+              width="1024"
+              height="1536"
+              fetchPriority="high"
+              decoding="async"
             />
             <div className="portrait-blend-gradient"></div>
           </div>

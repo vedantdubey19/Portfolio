@@ -40,8 +40,11 @@ html {
   color: var(--text-primary);
   font-family: var(--font-sans);
   overflow-x: hidden;
-  /* hide default cursor for our custom magnetic cursor */
-  cursor: none; 
+  /*
+   * The native cursor is hidden by CustomCursor.css only while the custom
+   * cursor is actually mounted, so a touch device, a reduced-motion user, or a
+   * JS failure always leaves a usable pointer on screen.
+   */
 }
 
 body {
@@ -80,10 +83,49 @@ body {
 }
 
 a, button {
-  cursor: none; /* Let the custom cursor handle this */
   text-decoration: none;
   font-family: inherit;
   color: inherit;
+}
+
+/* Keyboard focus must always be visible, including over the custom cursor. */
+:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Mouse users don't get an outline ring on click */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip link for keyboard and screen-reader users */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100000;
+  padding: 0.75rem 1.25rem;
+  background: var(--accent-red);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  border-radius: 0 0 8px 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 2rem;
+  z-index: 10;
+  position: relative;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -176,7 +218,53 @@ section {
   :root {
     --section-padding: 4rem;
   }
-  html, a, button {
-    cursor: auto; /* Revert cursor on mobile where there's no mouse */
+}
+
+/*
+ * Reduced motion.
+ * This site leans heavily on animation (starfield, cursor trail, magnetic
+ * cursor, scroll reveals). Users who ask for reduced motion get a static,
+ * fully readable version instead: transitions collapse to ~0, decorative
+ * loops stop, and the native cursor comes back.
+ *
+ * Note the `!important` on animation/transition — Framer Motion writes inline
+ * styles, so specificity alone will not win here. Components additionally
+ * check the same media query in JS (see Background, LiquidTrail, CustomCursor,
+ * Preloader, Experience) to skip work entirely rather than just hiding it.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Always leave a real cursor for these users */
+  html,
+  body,
+  a,
+  button {
+    cursor: auto !important;
+  }
+
+  /* Purely decorative motion layers */
+  .liquid-trail-canvas,
+  .cursor-dot,
+  .cursor-ring,
+  .cursor-ripple {
+    display: none !important;
+  }
+
+  /* Scroll-reveal elements sometimes start at opacity 0; force them visible
+     so nothing is permanently invisible when transitions are disabled. */
+  .noise-overlay {
+    opacity: 0.02;
   }
 }

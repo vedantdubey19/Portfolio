@@ -32,7 +32,7 @@ const deployedAppsData = [
     hudLabel: 'TELEMETRY // LOG_INSPECT',
     hudMetric: 'LATENCY < 0.5ms',
     hudGradient: 'radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.25) 0%, rgba(0, 0, 0, 0.6) 80%)',
-    description: 'High-performance AI observability platform silently monitoring microservice API traffic, detecting anomalies, and running Claude LLMs for automated root cause diagnostics.',
+    description: 'High-performance AI observability platform monitoring microservice API traffic, detecting anomalies, and calling Claude for automated root-cause diagnostics.',
     tech: ['Go', 'FastAPI', 'Claude API', 'Redis', 'MongoDB', 'React'],
     demoUrl: 'https://pulse-ai-pi.vercel.app/',
     githubUrl: 'https://github.com/vedantdubey19/Pulse_AI'
@@ -46,9 +46,9 @@ const deployedAppsData = [
     cardClass: 'card-nexchat',
     iconColor: '#e100ff',
     hudLabel: 'RAG ENGINE // VECTOR_DB',
-    hudMetric: 'CHROMADB // 0% HALLUCINATION',
+    hudMetric: 'CHROMADB // SOURCE-CITED',
     hudGradient: 'radial-gradient(circle at 50% 0%, rgba(225, 0, 255, 0.25) 0%, rgba(0, 0, 0, 0.6) 80%)',
-    description: 'Real-time chat & enterprise RAG platform indexing corporate documents with ChromaDB vector embeddings for zero-hallucination Q&A and instant media sharing.',
+    description: 'Real-time chat & enterprise RAG platform indexing corporate documents with ChromaDB vector embeddings, so answers stay grounded in cited source passages, plus instant media sharing.',
     tech: ['Python', 'FastAPI', 'ChromaDB', 'LangChain', 'React', 'OpenAI'],
     demoUrl: 'https://nex-chat-ivory.vercel.app',
     githubUrl: 'https://github.com/vedantdubey19/NexChat'
@@ -294,12 +294,14 @@ const DeployedProjects = () => {
               return (
                 <button
                   key={hub.id}
+                  type="button"
                   className={`graph-node-btn ${isSelected ? 'active' : ''}`}
                   onMouseEnter={() => setHoveredTech(hub.id)}
                   onMouseLeave={() => setHoveredTech(null)}
                   onClick={() => setHoveredTech(isSelected ? null : hub.id)}
+                  aria-pressed={isSelected}
                 >
-                  <Cpu size={14} className="node-icon" />
+                  <Cpu size={14} className="node-icon" aria-hidden="true" />
                   <span>{hub.label}</span>
                   <span className="node-count">{hub.projects.length} Systems</span>
                 </button>
@@ -308,7 +310,7 @@ const DeployedProjects = () => {
           </div>
 
           {hoveredTech && (
-            <div className="graph-status-msg">
+            <div className="graph-status-msg" role="status" aria-live="polite">
               <span>Tracing connections for <strong>{techHubNodes.find(h => h.id === hoveredTech)?.label}</strong>: Showing {filteredApps.length} linked systems below.</span>
             </div>
           )}
@@ -320,11 +322,13 @@ const DeployedProjects = () => {
             {categories.map((cat, idx) => (
               <button
                 key={idx}
+                type="button"
                 className={`filter-tab ${activeFilter === cat && !hoveredTech ? 'active' : ''}`}
                 onClick={() => {
                   setHoveredTech(null);
                   setActiveFilter(cat);
                 }}
+                aria-pressed={activeFilter === cat && !hoveredTech}
               >
                 {cat}
                 {cat === 'ALL' && <span className="count-pill">{deployedAppsData.length}</span>}

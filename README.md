@@ -1,121 +1,135 @@
-# Portfolio Website
+# Vedant Dubey — Portfolio
 
-A modern, interactive personal portfolio website showcasing projects, skills, and experience in AI/ML, software development, and full-stack engineering.
+Personal portfolio site for an AI engineer: shipped projects, certifications, and experience across LLMs, RAG systems, and full-stack engineering.
 
-## 🚀 Features
+**Live:** [vedantdubey.com](https://vedantdubey.com)
 
-- **Responsive Design**: Optimized for all devices and screen sizes
-- **Interactive Animations**: Smooth animations using Framer Motion
-- **Dynamic Components**: Custom cursor, liquid trail effects, and animated backgrounds
-- **Contact Form**: Backend integration for sending messages
-- **Skills Visualization**: Tag cloud for technical skills
-- **Project Showcase**: Detailed project cards with descriptions
-- **Experience Timeline**: Interactive timeline of professional experience
-- **Certifications**: Display of relevant certifications
+## Features
 
-## 🛠️ Tech Stack
+- Responsive layout down to small mobile widths
+- Motion-heavy interface built with Framer Motion, with a full `prefers-reduced-motion` fallback (animations, custom cursor, and canvas loops all switch off)
+- Canvas constellation background, liquid mouse trail, and a magnetic custom cursor, all disabled on touch devices and for reduced-motion users
+- Keyboard-accessible throughout: skip link, visible focus rings, an operable mobile nav, and a certificate lightbox with `role="dialog"`, focus trapping, and Escape-to-close
+- 3D tag cloud for the skills section
+- Project cards for nine deployed applications with live demo and source links
+- Interactive experience timeline with scroll-triggered counters
+- Certificate gallery with a full-size lightbox
+- Open Graph / Twitter Card metadata and JSON-LD `Person` schema for link previews and search
 
-### Frontend
-- **React** - UI library
-- **Vite** - Build tool and dev server
-- **Framer Motion** - Animation library
-- **Lucide React** - Icon library
-- **TagCloud** - 3D tag cloud visualization
+## Tech stack
 
-### Backend
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MongoDB** - Database
-- **Mongoose** - ODM for MongoDB
+**Frontend** — React 19, Vite 7, Framer Motion 12, Lucide React, TagCloud
 
-## 📋 Prerequisites
+**Backend** (optional, see below) — Node.js, Express 5, MongoDB, Mongoose 9, Multer
 
-- Node.js (v16 or higher)
-- npm or yarn
-- MongoDB (local or cloud instance)
+## Repository layout
 
-## 🔧 Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/vedantdubey19/Portfolio.git
-   cd vedant-portfolio
-   ```
-
-2. **Install frontend dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Install backend dependencies**
-   ```bash
-   cd backend
-   npm install
-   cd ..
-   ```
-
-4. **Set up environment variables**
-   Create a `.env` file in the `backend` directory:
-   ```
-   MONGODB_URI=your_mongodb_connection_string
-   PORT=5000
-   ```
-
-## 🚀 Usage
-
-1. **Start the backend server**
-   ```bash
-   cd backend
-   npm start
-   ```
-
-2. **Start the frontend development server**
-   ```bash
-   # In a new terminal, from the root directory
-   npm run dev
-   ```
-
-3. **Open your browser**
-   Navigate to `http://localhost:5173` (or the port shown in the terminal)
-
-## 📁 Project Structure
+The frontend is the site. The `backend/` directory is a standalone Express API for
+persisting contact-form submissions and certificate uploads; **the deployed
+frontend does not currently call it**, so the site builds and runs as a
+static SPA with no server required.
 
 ```
-vedant-portfolio/
-├── public/                 # Static assets
+Portfolio/
+├── public/                    # Static assets served as-is
+│   ├── certificates/          # Certificate images used by the gallery
+│   └── og-image.jpg           # 1200x630 social preview card
 ├── src/
-│   ├── assets/            # Images and media files
-│   ├── components/        # React components
-│   │   ├── About.jsx      # About section
-│   │   ├── Contact.jsx    # Contact form
-│   │   ├── Experience.jsx # Experience timeline
-│   │   ├── Hero.jsx       # Hero section
-│   │   ├── Projects.jsx   # Projects showcase
-│   │   ├── Skills.jsx     # Skills section
-│   │   └── ...            # Other components
-│   ├── App.jsx            # Main app component
-│   └── main.jsx           # App entry point
+│   ├── assets/                # Bundled images, resume PDF
+│   ├── components/
+│   │   ├── Hero.jsx           # Landing section + portrait
+│   │   ├── About.jsx
+│   │   ├── Skills.jsx         # 3D tag cloud
+│   │   ├── BrutalistProjects.jsx   # Full-bleed project showcase
+│   │   ├── DeployedProjects.jsx    # Filterable grid of live apps
+│   │   ├── Experience.jsx     # Timeline + animated stats
+│   │   ├── Achievements.jsx
+│   │   ├── Certifications.jsx # Card stack + lightbox
+│   │   ├── Contact.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── Background.jsx     # Canvas constellation
+│   │   ├── CustomCursor.jsx
+│   │   ├── LiquidTrail.jsx
+│   │   └── Preloader.jsx
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css              # Design tokens, focus styles, reduced-motion
 ├── backend/
-│   ├── models/            # Database models
-│   ├── server.js          # Express server
+│   ├── models/                # Mongoose schemas
+│   ├── server.js              # Express API
+│   ├── .env.example
 │   └── package.json
+├── index.html                 # Meta tags, JSON-LD, font preconnects
 └── package.json
 ```
 
-## 🤝 Contributing
+## Prerequisites
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- Node.js 20 or newer
+- npm
+- MongoDB — only if you want to run the backend API
 
-## 📄 License
+## Running the frontend
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```bash
+git clone https://github.com/vedantdubey19/Portfolio.git
+cd Portfolio
+npm install
+npm run dev
+```
 
-## 📞 Contact
+Then open the URL Vite prints (usually `http://localhost:5173`).
 
-Vedant Dubey - [Your Email] - [LinkedIn Profile]
+```bash
+npm run lint      # ESLint
+npm run build     # Production build into dist/
+npm run preview   # Serve the built output locally
+```
 
-Project Link: [https://github.com/vedantdubey19/Portfolio](https://github.com/vedantdubey19/Portfolio)
+## Running the backend (optional)
+
+```bash
+cd backend
+npm install
+cp .env.example .env    # then fill in the values
+npm start
+```
+
+`backend/.env` requires:
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `MONGO_URI` | yes | MongoDB connection string. The server exits if it is missing or unreachable. |
+| `ADMIN_TOKEN` | yes | Bearer token required by `POST /api/certificates`. Minimum 32 characters. |
+| `PORT` | no | Defaults to `5001`. |
+| `ALLOWED_ORIGINS` | no | Comma-separated CORS allowlist. Defaults to `http://localhost:5173`. |
+
+Generate an admin token with:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+### API
+
+| Method | Route | Auth | Notes |
+| --- | --- | --- | --- |
+| `GET` | `/api/health` | — | Reports process and database status |
+| `GET` | `/api/certificates` | — | Most recent 100 certificates |
+| `POST` | `/api/certificates` | `Authorization: Bearer <ADMIN_TOKEN>` | Multipart upload; JPEG/PNG/WebP only, 5 MB cap, rate limited |
+| `POST` | `/api/contact` | — | Validates email and length, rate limited to 5 requests per 15 minutes per IP |
+
+## Deployment
+
+The frontend is a static build — `npm run build` produces `dist/`, which deploys
+as-is to Vercel, Netlify, or any static host. If you deploy the backend
+separately, add its public origin to `ALLOWED_ORIGINS` and keep `.env` out of
+version control.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+## Contact
+
+Vedant Dubey — [vedantdubey.1302@gmail.com](mailto:vedantdubey.1302@gmail.com) · [LinkedIn](https://www.linkedin.com/in/vedant-dubey-a9697b278/) · [GitHub](https://github.com/vedantdubey19)

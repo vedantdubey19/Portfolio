@@ -9,6 +9,7 @@
   pointer-events: none;
   z-index: 9999;
   mix-blend-mode: difference;
+  will-change: transform;
 }
 
 .cursor-ring {
@@ -21,15 +22,39 @@
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
+  will-change: transform;
 }
 
-/* Hide default cursor only when the custom cursor is visible */
+.cursor-ripple {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--accent-red);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9997;
+}
+
+/*
+ * Hide the native cursor only once the custom one is actually mounted.
+ * CustomCursor adds .custom-cursor-active to <html>, so if it bails out
+ * (touch device, reduced motion, JS error) the real cursor stays visible.
+ */
 @media (hover: hover) and (pointer: fine) {
-  body {
+  .custom-cursor-active,
+  .custom-cursor-active body {
     cursor: none;
   }
-  
-  a, button, input, textarea {
-    cursor: none !important;
+
+  .custom-cursor-active a,
+  .custom-cursor-active button,
+  .custom-cursor-active input,
+  .custom-cursor-active textarea {
+    cursor: none;
   }
+}
+
+/* Keyboard users must still see where focus is, even with the custom cursor. */
+.custom-cursor-active :focus-visible {
+  cursor: auto;
 }

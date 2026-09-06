@@ -7,8 +7,15 @@ const LiquidTrail = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    // A mouse-follow trail is pure decoration: skip it entirely for reduced-motion
+    // users and on touch devices where there is no cursor to trail.
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    if (reduceMotion || isTouch) return;
+
     const ctx = canvas.getContext('2d');
-    
+    let frameId;
     let width = window.innerWidth;
     let height = window.innerHeight;
     canvas.width = width;
@@ -79,12 +86,13 @@ const LiquidTrail = () => {
         points.shift();
       }
 
-      requestAnimationFrame(animate);
+      frameId = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
+      cancelAnimationFrame(frameId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
     };

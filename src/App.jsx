@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
 import CustomCursor from './components/CustomCursor';
 import LiquidTrail from './components/LiquidTrail';
 import Preloader from './components/Preloader';
@@ -19,10 +19,15 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   return (
-    <>
+    // reducedMotion="user" makes every framer-motion animation on the page
+    // honour the OS "reduce motion" setting. CSS alone cannot do this because
+    // Framer Motion animates via inline styles in JS.
+    <MotionConfig reducedMotion="user">
+      <a className="skip-link" href="#main">Skip to content</a>
+
       <CustomCursor />
       <LiquidTrail />
-      <div className="noise-overlay"></div>
+      <div className="noise-overlay" aria-hidden="true"></div>
 
       <AnimatePresence mode="wait">
         {loading && (
@@ -32,7 +37,7 @@ function App() {
 
       <Background />
       <Navbar />
-      <main>
+      <main id="main">
         <Hero />
         <About />
         <Skills />
@@ -44,20 +49,11 @@ function App() {
         <Contact />
       </main>
 
-      <footer style={{ 
-        textAlign: 'center', 
-        padding: '2rem', 
-        color: 'var(--text-muted)', 
-        borderTop: '1px solid rgba(255,255,255,0.05)', 
-        marginTop: '2rem', 
-        zIndex: 10, 
-        position: 'relative' 
-      }}>
+      <footer className="site-footer">
         <p>&copy; {new Date().getFullYear()} Vedant Dubey. All rights reserved.</p>
       </footer>
-    </>
+    </MotionConfig>
   );
 }
 
 export default App;
-
